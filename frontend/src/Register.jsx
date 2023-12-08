@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 function Register() {
     const [values, setValues] = useState({
@@ -16,7 +17,7 @@ function Register() {
 
   return (
     <div className='d-flex justify-content-center align-items-center bg-primary vh-100'>
-          <div className='bg-white p-3 rounded'>
+          <div style={{maxWidth: '90%', width: '400px'}} className='bg-white p-3 rounded'>
             <h2>Sign-Up</h2>
             <form onSubmit = {handleSubmit}>
                 <div className='mb-2'>
