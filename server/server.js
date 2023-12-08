@@ -77,6 +77,7 @@ app.post('/register', (req, res) => {
         });
     });
 });
+
 app.post('/login', (req, res) => {
     const sql = "SELECT * FROM admins WHERE location_id = ?";
     db.query(sql, [req.body.location_id], (err, result) => {
@@ -105,7 +106,51 @@ app.post('/login', (req, res) => {
             return res.json({Status: "Success"});
         });
     });
-}); 
+});
+
+app.post('/add_time', (req, res) => {
+    const student_id = req.body.student_id;
+    const location_id = req.body.location_id;
+    const time = req.body.time;
+    const sql_find_null = "SELECT * FROM parking_event WHERE student_id = ? AND location_id = ? AND time_out IS NULL AND time_in IS NOT NULL";
+    db.query(sql_find_null, [student_id, location_id, time], (err, result) => {
+        if (err) {
+            console.error('Error inserting values:', err); // Print to the server terminal
+            return res.json({ message: "Error in inserting values", values, error: err.message });
+        } else {
+            console.log(result);
+            if (result.length === 0) {
+                const sql = "INSERT INTO parking_event (student_id, location_id, time_in, is_paid) VALUES (?)";
+                const values = [student_id, location_id, time, 0];
+                db.query(sql, [values], (err, result) => {
+                    if (err) {
+                        console.error('Error inserting values:', values, 'Error:', err); // Print to the server terminal
+                        return res.json({ message: "Error in inserting values", values, error: err.message });
+                    } else {
+                        return res.json({ message: "insert Successfully" });
+                    }
+                });
+            } else {
+                const getPrice = (location_id, time_in, time_out) => {
+                    return 4;
+                };
+                const price = getPrice(location_id, 0, 0);
+                const sql = "UPDATE parking_event SET time_out = ?, price = ? WHERE student_id = ? AND location_id = ? AND time_out IS NULL";
+                const values = [time, price, student_id, location_id];
+                db.query(sql, values, (err, result) => {
+                    if (err) {
+                        console.error('Error inserting values:', values, 'Error:', err); // Print to the server terminal
+                        return res.json({ message: "Error in inserting values", values, error: err.message });
+                    } else {
+                        return res.json({ message: "Update time_out Successfully" });
+                    }
+                });
+            }
+        }
+    });
+
+});
+
 
 app.listen(3000,() => {
     console.log("Server is running on port 3000");

@@ -1,10 +1,23 @@
+
 .home-container {
     text-align: center;
-    padding-top: 50px;
-    background: #3498db; /* A vibrant blue background */
+    padding-top: 0;
+    background: #3498db;
     color: white;
-    height: 100vh;
     font-family: 'Arial', sans-serif;
+}
+
+.home-container:after {
+    content: "";
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: -100px;
+    z-index: -1;
+    display: block;
+    background: #3498db; /* A vibrant blue background */
+    background-size: cover;
 }
 
 .auth-container {
