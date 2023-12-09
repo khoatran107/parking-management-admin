@@ -18,11 +18,11 @@ function Login() {
       .then((res) => {
         if (res.data.Status === "Success") navigate("/");
         else {
-          Swal.fire("Wrong username or password!");
+          Swal.fire({titleText: "Wrong location id or password", icon: 'error', timer: 3000});
         }
       })
       .catch((err) => {
-        console.log(err);
+        Swal.fire({titleText: "System fault, can't login", icon: 'error', timer: 3000});
       });
   };
   return (

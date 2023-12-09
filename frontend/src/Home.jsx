@@ -5,6 +5,7 @@ import axios from "axios";
 import "./Home.css"; // Assuming you have a CSS file for styling
 import StudentIDForm from "./StudentIDForm";
 import QRCodeScanner from "./QRCodeScanner";
+import Swal from "sweetalert2";
 
 function Home() {
   const [auth, setAuth] = useState(false);
@@ -62,9 +63,14 @@ function Home() {
     axios
       .get("http://localhost:3000/logout")
       .then(() => {
-        navigate("/login");
+        if (res.data.Status === "Success") Swal.fire({titleText: 'Registered successfully!', icon: 'success', timer: 3000});
+        else {
+          Swal.fire({titleText: "Can't register location", icon: 'error', timer: 3000});
+        }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        Swal.fire({titleText: "There's a problem when registering location", icon: 'error', timer: 3000});
+      });
   };
 
   return (
@@ -88,10 +94,18 @@ function Home() {
             <p>Location ID: {location_id}</p>
           </div>
           <div className="mb-1 p-0 d-flex justify-content-between logout-container">
-            <Link to="/students" className="btn btn-info m-0">
-              Manage Students
+          <Link to="/" className="btn btn-primary">
+              Scan
             </Link>
-            <a className="btn btn-danger m-0" onClick={handleLogout}>Logout</a>
+            <Link to="/students" className="btn btn-secondary">
+              View Students
+            </Link>
+            <Link to="/prices" className="btn btn-secondary">
+              Edit Prices
+            </Link>
+            <a className="btn btn-danger" onClick={handleLogout}>
+              Logout
+            </a>
           </div>
           <div className="scanner" style={{ width: "100%" }}>
             <p style={{ margin: 0, marginTop: "1rem" }}>Scan QR Code here!</p>

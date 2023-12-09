@@ -1,30 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Swal from 'sweetalert2';
 
 const StudentIDForm = ({location_id, scannedResult, onSubmit}) => {
   const [student_id, setStudentID] = useState('');
+  useEffect(() => {
+    setStudentID(scannedResult);
+  }, [scannedResult]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     // Send a POST request using Axios to localhost:3000/add_time
-    const currentDateTime = new Date().toISOString().slice(0, 19).replace("T", " ");
+    const currentDateTime = new Date(Date.now() + 7 * (60 * 60 * 1000)).toISOString().slice(0, 19).replace("T", " ");
     try {
       const response = await axios.post('http://localhost:3000/add_time', {
-        student_id,
+        student_id: parseInt(student_id),
         location_id,
         time: currentDateTime
       });
+      console.log(response);
 
-      if (response.status === 200) {
-        Swal.fire('Student ID added successfully!');
+      if (response.status === 200 && !response.data.error) {
+        Swal.fire({titleText: 'Student ID added successfully!', icon: 'success', timer: 1200});
       } else {
-        Swal.fire('Error adding Student ID. Please try again!');
+        Swal.fire({titleText:'Error adding Student ID. Please try again!', icon: 'error', timer:5000});
       }
     } catch (error) {
       console.error('Error:', error);
-      Swal.fire('An error occurred. Please try again.');
+      Swal.fire({titleText:'An unknown error occurs. Please try again!', icon: 'error', timer:5000});
     }
     if (onSubmit) {
       onSubmit();

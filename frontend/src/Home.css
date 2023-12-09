@@ -5,7 +5,12 @@
     padding: 30px 0;
     background: #3498db;
     color: white;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Arial', sans-serif;    
+}
+
+.home-container > *:first-child {
+    max-width: 90%; /* Adjust width for better centering */
+    width: 650px;
 }
 
 .home-container:after {
@@ -32,7 +37,7 @@
     border-radius: 8px;
     margin: 0 auto;
     max-width: 90%; /* Adjust width for better centering */
-    width: 600px;
+    width: 650px;
 }
 
 .user-info {

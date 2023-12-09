@@ -71,15 +71,21 @@ const ViewStudent = () => {
             <p>Location ID: {location_id}</p>
           </div>
           <div className="mb-1 p-0 d-flex justify-content-between logout-container">
-            <Link to="/" className="btn btn-primary m-0">
-              Back to scan
+          <Link to="/" className="btn btn-primary">
+              Scan
             </Link>
-            <a className="btn btn-danger m-0" onClick={handleLogout}>
+            <Link to="/students" className="btn btn-secondary">
+              View Students
+            </Link>
+            <Link to="/prices" className="btn btn-secondary">
+              Edit Prices
+            </Link>
+            <a className="btn btn-danger" onClick={handleLogout}>
               Logout
             </a>
           </div>
-          <div>
-            <h4 className="my-4">Tickets for location id {location_id}</h4>
+          <div style={{wordBreak: 'break-word', width: '100%'}}>
+            <h4 className="my-4" style={{wordBreak: 'break-word', width: '100%'}}>Tickets for location id {location_id}</h4>
             <table className="table table-hover table-bordered">
               <thead>
                 <tr className="table-primary">
@@ -89,12 +95,18 @@ const ViewStudent = () => {
                   <th scope="col">Status</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody style={{wordBreak: 'break-word', maxWidth: '100%'}}>
                 {tickets.map((ticket, i) => (
                   <tr key={ticket.student_id} className={ticket.paid? "table-success" : "table-danger"}>
                     <td>{ticket.student_id}</td>
-                    <td>{ticket.time_in}</td>
-                    <td>{ticket.time_out ? ticket.time_out: "Still Parking..."}</td>
+                    <td>{[(new Date(ticket.time_in)).toLocaleString().split('/')[1],
+                      (new Date(ticket.time_in)).toLocaleString().split('/')[0],
+                      (new Date(ticket.time_in)).toLocaleString().split('/')[2]].join('/')}</td>
+                    <td>{ticket.time_out ?
+                      [(new Date(ticket.time_out)).toLocaleString().split('/')[1],
+                      (new Date(ticket.time_out)).toLocaleString().split('/')[0],
+                      (new Date(ticket.time_out)).toLocaleString().split('/')[2]].join('/')
+                      : "Still Parking..."}</td>
                     <td>{ticket.paid ? "Paid": "Not Paid"}</td>
                   </tr>
                 ))}
